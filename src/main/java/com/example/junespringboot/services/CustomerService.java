@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CustomerService {
     private CustomerDAO dao;
+    private MailService mailService;
 
     public ResponseEntity<List<Customer>> getAll(){
         List<Customer> all = dao.findAll();
@@ -23,9 +24,11 @@ public class CustomerService {
 
     public void create(Customer customer){
         dao.save(customer);
+
+        mailService.send(customer);
     }
 
-    public Customer getOne(int id){
+    public Customer getCustomerById(int id){
         return dao.findById(id).get();
     }
 
@@ -37,6 +40,10 @@ public class CustomerService {
         c.setEmail(customer.getEmail());
 
         dao.save(c);
+    }
+
+    public void update(Customer customer) {
+        dao.save(customer);
     }
 
     public void delete(int id) {

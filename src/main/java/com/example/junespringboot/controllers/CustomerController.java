@@ -35,7 +35,7 @@ public class CustomerController {
     @GetMapping("/{id}")
     @JsonView(Views.Admin.class)
     public ResponseEntity<Customer> getOne(@PathVariable int id){
-        Customer customer = service.getOne(id);
+        Customer customer = service.getCustomerById(id);
 
         return new ResponseEntity<>(customer, HttpStatusCode.valueOf(200));
     }
@@ -64,5 +64,12 @@ public class CustomerController {
         List<Customer> customers = service.getCustomersBySurname(surname);
 
         return new ResponseEntity<>(customers, HttpStatusCode.valueOf(200));
+    }
+
+    @GetMapping("/activate/{id}")
+    public void activate(@PathVariable int id) {
+        Customer customer = service.getCustomerById(id);
+        customer.setActivated(true);
+        service.update(customer);
     }
 }
