@@ -14,8 +14,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
-import javax.swing.text.View;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -40,12 +38,15 @@ public class Customer {
     @JsonView({Views.Admin.class, Views.Client.class})
     private String email;
 
+    @JsonView({Views.Admin.class, Views.Client.class})
+    private String avatar;
+
     @JsonView({Views.Admin.class})
     private boolean isActivated = false;
 
-    public Customer(String name, String surname, String email) {
+    public Customer(String name, String email, String avatar){
         this.name = name;
-        this.surname = surname;
         this.email = email;
+        this.avatar = avatar;
     }
 }

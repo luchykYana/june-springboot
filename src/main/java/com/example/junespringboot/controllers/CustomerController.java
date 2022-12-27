@@ -11,7 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -71,5 +74,17 @@ public class CustomerController {
         Customer customer = service.getCustomerById(id);
         customer.setActivated(true);
         service.update(customer);
+    }
+
+    @PostMapping("/saveWithAvatar")
+    public void saveWithAvatar(@RequestParam String name,
+                               @RequestParam String email,
+                               @RequestParam MultipartFile avatar) throws IOException {
+        Customer customer = new Customer(name, email, "/img/" + avatar.getOriginalFilename()); //
+        service.create(customer);
+
+        String pathname = System.getProperty("user.home") + File.separator + "Pictures" + File.separator + avatar.getOriginalFilename();
+        File file = new File(pathname);
+        avatar.transferTo(file);
     }
 }
